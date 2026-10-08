@@ -10,17 +10,31 @@ spring:
           model: nomic-embed-text
     vectorstore:
       pgvector:
-        inex-type: HNSW
+        index-type: HNSW
         distance-type: COSINE_DISTANCE
         dimensions: 1024
         initialize-schema: true
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: mysecretpassword
+    password:
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
+
+resilience4j.circuitbreaker:
+  instance:
+    primaryService:
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 5
+      minimumNumberOfCalls: 3
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10s
+      permittedNumberOfCallsInHalfOpenState: 2
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      recordExceptions:
+        - org.springframework.web.client.RestClientResponseException
+        - org.springframework.web.client.ResourceAccessException

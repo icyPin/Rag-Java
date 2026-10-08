@@ -7,10 +7,7 @@ import com.example.Rag_java.service.ModelHandlingService;
 import com.example.Rag_java.service.RelivantChunksService;
 import org.springframework.ai.document.Document;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,8 +25,8 @@ public class QueryController {
         this.modelHandlingService=modelHandlingService;
     }
 
-    @GetMapping("/ans")
-    public ResponseEntity<String> getData(@RequestParam ChatRequest request) {
+    @PostMapping("/ans")
+    public ResponseEntity<String> getData(@RequestBody ChatRequest request) {
 
         String query = request.query();
         List<Document> contextDocs = relivantChunksService.searchTopK(query);
@@ -39,7 +36,7 @@ public class QueryController {
 
         PythonRequest pythonRequest = new PythonRequest(query, context);
 
-        PythonResponse response = modelHandlingService.call(pythonRequest);
+        PythonResponse response = modelHandlingService.getResponse(pythonRequest);
         return ResponseEntity.ok("fuck");
     }
 }
