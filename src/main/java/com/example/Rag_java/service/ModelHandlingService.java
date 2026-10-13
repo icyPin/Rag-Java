@@ -4,6 +4,7 @@ package com.example.Rag_java.service;
 import com.example.Rag_java.dto.PythonRequest;
 import com.example.Rag_java.dto.PythonResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -22,11 +23,28 @@ public class ModelHandlingService {
     public PythonResponse getResponse(PythonRequest request){
 
         System.out.println("Primary service invoked...");
+
+        return client.post()
+                .uri("/generate/primary")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(request)
+                .retrieve()
+                .body(PythonResponse.class);
+
+
     }
 
     public PythonResponse fallBack(PythonRequest request , Throwable throwable){
 
         System.out.println("Fallback option bcs gemini sucks...");
+
+        return client.post()
+                .uri("/generate/fallback")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(request)
+                .retrieve()
+                .body(PythonResponse.class);
+
 
     }
 }

@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RequestMapping
-@RestController("/api/get")
+
+@RestController
+@RequestMapping("/api/get")
 public class QueryController {
 
     private final RelivantChunksService relivantChunksService;
@@ -37,6 +38,6 @@ public class QueryController {
         PythonRequest pythonRequest = new PythonRequest(query, context);
 
         PythonResponse response = modelHandlingService.getResponse(pythonRequest);
-        return ResponseEntity.ok("fuck");
+        return ResponseEntity.ok(response.response());
     }
 }

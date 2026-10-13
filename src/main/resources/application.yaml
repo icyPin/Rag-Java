@@ -12,12 +12,12 @@ spring:
       pgvector:
         index-type: HNSW
         distance-type: COSINE_DISTANCE
-        dimensions: 1024
+        dimensions: 768
         initialize-schema: true
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password:
+    password: mysecretpassword
     driver-class-name: org.postgresql.Driver
 
   jpa:

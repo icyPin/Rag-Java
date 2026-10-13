@@ -34,5 +34,4 @@ public class EmbeddingService  {
         vectorStore.add(vector);
         System.out.println(vector);
     }
-
 }
