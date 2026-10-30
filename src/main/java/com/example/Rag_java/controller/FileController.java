@@ -18,6 +18,10 @@ public class FileController {
         this.embeddingService = embeddingService;
     }
 
+    //this is only for local initial testing
+    //need to change this to hot directory ingestion
+    // will work on this later once  get the time 
+
     @PostMapping("/upload")
     public ResponseEntity<String> upload(@RequestParam("file")MultipartFile file){
         try{
@@ -27,5 +31,4 @@ public class FileController {
             return ResponseEntity.internalServerError().body("Error embedding file: "+ e.getMessage());
         }
     }
-
 }

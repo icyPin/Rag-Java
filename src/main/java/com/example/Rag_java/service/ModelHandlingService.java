@@ -30,8 +30,6 @@ public class ModelHandlingService {
                 .body(request)
                 .retrieve()
                 .body(PythonResponse.class);
-
-
     }
 
     public PythonResponse fallBack(PythonRequest request , Throwable throwable){
@@ -44,7 +42,5 @@ public class ModelHandlingService {
                 .body(request)
                 .retrieve()
                 .body(PythonResponse.class);
-
-
     }
 }
