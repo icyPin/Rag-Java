@@ -1,46 +1,45 @@
 package com.example.Rag_java.service;
 
 
+import com.example.Rag_java.dto.ChatRequest;
 import com.example.Rag_java.dto.PythonRequest;
 import com.example.Rag_java.dto.PythonResponse;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.sql.SQLOutput;
 
+@Slf4j
 @Service
 public class ModelHandlingService {
 
-    private final RestClient client;
+    private final ChatLanguageModel primary;
+    private final ChatLanguageModel fallback;
 
-    public ModelHandlingService(RestClient.Builder builder){
-        this.client=builder.baseUrl("http://127.0.0.1:8000").build();
+    public ModelHandlingService(@Qualifier("primaryChatModel") ChatLanguageModel primary ,
+                                @Qualifier("fallbackChatModel") ChatLanguageModel fallback){
+        this.primary=primary;
+        this.fallback=fallback;
     }
 
     @CircuitBreaker(name = "primaryService" , fallbackMethod = "fallBack")
-    public PythonResponse getResponse(PythonRequest request){
+    public PythonResponse getResponse(String prompt){
 
-        System.out.println("Primary service invoked...");
-
-        return client.post()
-                .uri("/generate/primary")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(request)
-                .retrieve()
-                .body(PythonResponse.class);
+        log.info("gemini invoked...");
+        String response = primary.generate(prompt);
+        return new PythonResponse(response);
     }
 
-    public PythonResponse fallBack(PythonRequest request , Throwable throwable){
+    public PythonResponse fallBack(String prompt , Throwable throwable) {
 
-        System.out.println("Fallback option bcs gemini sucks...");
-
-        return client.post()
-                .uri("/generate/fallback")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(request)
-                .retrieve()
-                .body(PythonResponse.class);
+        log.warn("fallback option bcs gemini sucks...");
+        String response = fallback.generate(prompt);
+        return new PythonResponse(response);
     }
+
 }

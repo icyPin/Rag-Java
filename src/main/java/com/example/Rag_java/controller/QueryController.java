@@ -1,16 +1,15 @@
 package com.example.Rag_java.controller;
 
 import com.example.Rag_java.dto.ChatRequest;
-import com.example.Rag_java.dto.PythonRequest;
 import com.example.Rag_java.dto.PythonResponse;
 import com.example.Rag_java.service.ModelHandlingService;
 import com.example.Rag_java.service.RelivantChunksService;
-import org.springframework.ai.document.Document;
+import dev.langchain4j.data.segment.TextSegment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -30,14 +29,24 @@ public class QueryController {
     public ResponseEntity<String> getData(@RequestBody ChatRequest request) {
 
         String query = request.query();
-        List<Document> contextDocs = relivantChunksService.searchTopK(query);
-        List<String> context = contextDocs.stream()
-                .map(Document::getText)
-                .toList();
+        List<TextSegment> chunks = relivantChunksService.searchTopK(query);
 
-        PythonRequest pythonRequest = new PythonRequest(query, context);
+        String context = chunks.stream()
+                .map(TextSegment::text)
+                .collect(Collectors.joining("\n---\n"));
 
-        PythonResponse response = modelHandlingService.getResponse(pythonRequest);
+        String finalPrompt = String.format("""
+            Answer the user's question strictly based on the following context.
+            If the answer cannot be found in the context, respond with "I cannot find this in the documents."
+
+            CONTEXT:
+            %s
+
+            USER QUESTION:
+            %s
+            """, context, query);
+
+        PythonResponse response = modelHandlingService.getResponse(finalPrompt);
         return ResponseEntity.ok(response.response());
     }
 }

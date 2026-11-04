@@ -35,18 +35,38 @@
             <artifactId>spring-boot-starter-aspectj</artifactId>
         </dependency>
 
-        <!-- Spring AI & Vector Store -->
+        <!-- LangChain4j Core & Spring Boot Starter -->
         <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-model-ollama</artifactId>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-spring-boot4-starter</artifactId>
+            <version>1.23.0-beta33</version>
         </dependency>
+
+        <!-- Ollama Integration (for both nomic-embed-text and qwen2.5-coder) -->
         <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-ollama</artifactId>
+            <version>0.36.2</version>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-pdf-document-reader</artifactId>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-google-ai-gemini</artifactId>
+            <version>1.22.0</version>
+        </dependency>
+
+        <!-- PGVector Store Integration -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-pgvector</artifactId>
+            <version>0.36.2</version>
+        </dependency>
+
+        <!-- Document Parser for PDFs -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
+            <version>0.36.2</version>
         </dependency>
 
         <!-- Resilience & Circuit Breaker -->
