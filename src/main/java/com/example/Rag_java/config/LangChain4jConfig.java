@@ -1,6 +1,5 @@
 package com.example.Rag_java.config;
 
-import com.example.Rag_java.service.EmbeddingService;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.ollama.OllamaEmbeddingModel;

@@ -2,7 +2,6 @@ package com.example.Rag_java.service;
 
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
@@ -28,6 +27,8 @@ public class EmbeddingService  {
     private final EmbeddingModel embeddingModel;
     private final EmbeddingStore<TextSegment> embeddingStore;
 
+
+    //use this for later
     public void embedFile(Resource pdf){
 
         log.info("Processing the file or embedding: {}" , pdf.getFilename());
