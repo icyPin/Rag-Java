@@ -41,7 +41,7 @@ public class EmbeddingService  {
                     .split(document);
 
             if(segments.isEmpty()){
-                log.warn("the pdf is empty");
+                log.warn("empty pdf try another....");
                 return;
             }
 
@@ -56,5 +56,9 @@ public class EmbeddingService  {
         catch (IOException e){
             throw new RuntimeException(e);
         }
+    }
+
+    public Embedding  embedQuery(String query){
+        return embeddingModel.embed(query).content();
     }
 }
