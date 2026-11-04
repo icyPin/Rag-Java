@@ -4,7 +4,7 @@ package com.example.Rag_java.service;
 import com.example.Rag_java.dto.ChatRequest;
 import com.example.Rag_java.dto.PythonRequest;
 import com.example.Rag_java.dto.PythonResponse;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,11 +18,11 @@ import java.sql.SQLOutput;
 @Service
 public class ModelHandlingService {
 
-    private final ChatLanguageModel primary;
-    private final ChatLanguageModel fallback;
+    private final ChatModel primary;
+    private final ChatModel fallback;
 
-    public ModelHandlingService(@Qualifier("primaryChatModel") ChatLanguageModel primary ,
-                                @Qualifier("fallbackChatModel") ChatLanguageModel fallback){
+    public ModelHandlingService(@Qualifier("primaryChatModel") ChatModel primary ,
+                                @Qualifier("fallbackChatModel") ChatModel fallback){
         this.primary=primary;
         this.fallback=fallback;
     }
@@ -31,14 +31,14 @@ public class ModelHandlingService {
     public PythonResponse getResponse(String prompt){
 
         log.info("gemini invoked...");
-        String response = primary.generate(prompt);
+        String response = primary.chat(prompt);
         return new PythonResponse(response);
     }
 
     public PythonResponse fallBack(String prompt , Throwable throwable) {
 
         log.warn("fallback option bcs gemini sucks...");
-        String response = fallback.generate(prompt);
+        String response = fallback.chat(prompt);
         return new PythonResponse(response);
     }
 

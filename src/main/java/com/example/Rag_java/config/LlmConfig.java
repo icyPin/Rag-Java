@@ -1,7 +1,6 @@
 package com.example.Rag_java.config;
 
-
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +13,7 @@ import java.time.Duration;
 public class LlmConfig {
 
     @Bean("primaryChatModel")
-    public GoogleAiGeminiChatModel primaryChatMode(@Value("dummy") String key){
+    public ChatModel primaryChatModel(@Value("dummy") String key){
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(key)
                 .modelName("gemini-3.8-flash")
@@ -23,7 +22,7 @@ public class LlmConfig {
     }
 
     @Bean("fallbackChatModel")
-    public ChatLanguageModel fallbackChatModel(){
+    public ChatModel fallbackChatModel(){
         return OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434")
                 .modelName("qwen2.5-coder:7b")

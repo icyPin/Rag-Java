@@ -42,31 +42,32 @@
             <version>1.23.0-beta33</version>
         </dependency>
 
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j</artifactId>
+        </dependency>
+
         <!-- Ollama Integration (for both nomic-embed-text and qwen2.5-coder) -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-ollama</artifactId>
-            <version>0.36.2</version>
         </dependency>
 
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-google-ai-gemini</artifactId>
-            <version>1.22.0</version>
         </dependency>
 
         <!-- PGVector Store Integration -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-pgvector</artifactId>
-            <version>0.36.2</version>
         </dependency>
 
         <!-- Document Parser for PDFs -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
-            <version>0.36.2</version>
         </dependency>
 
         <!-- Resilience & Circuit Breaker -->
@@ -102,6 +103,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- 1. Spring Cloud BOM -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -109,16 +111,18 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- 2. LangChain4j BOM -->
             <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-bom</artifactId>
-                <version>${spring-ai.version}</version>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>1.23.0</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <!-- LangChain4j 1.x BOM to sync all versions -->
     <build>
         <plugins>
             <plugin>
