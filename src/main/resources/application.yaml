@@ -37,6 +37,7 @@ resilience4j:
         recordExceptions:
           - org.springframework.web.client.RestClientResponseException
           - org.springframework.web.client.ResourceAccessException
+          - java.lang.Exception
 
 app:
   dbPassword: ${dbPassword:mysecretpassword}
