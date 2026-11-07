@@ -1,6 +1,7 @@
 package com.example.Rag_java.controller;
 
 import com.example.Rag_java.dto.ChatRequest;
+import com.example.Rag_java.dto.ChatResponse;
 import com.example.Rag_java.dto.PythonResponse;
 import com.example.Rag_java.service.ModelHandlingService;
 import com.example.Rag_java.service.RelivantChunksService;
@@ -26,7 +27,7 @@ public class QueryController {
     }
 
     @PostMapping("/ans")
-    public ResponseEntity<String> getData(@RequestBody ChatRequest request) {
+    public ResponseEntity<ChatResponse> getData(@RequestBody ChatRequest request) {
 
         String query = request.query();
         List<TextSegment> chunks = relivantChunksService.searchTopK(query);
@@ -47,6 +48,6 @@ public class QueryController {
             """, context, query);
 
         PythonResponse response = modelHandlingService.getResponse(finalPrompt);
-        return ResponseEntity.ok(response.response());
+        return ResponseEntity.ok(new ChatResponse(response.response(), response.modelUsed()));
     }
 }

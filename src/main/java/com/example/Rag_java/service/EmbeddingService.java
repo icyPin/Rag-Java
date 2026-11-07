@@ -50,7 +50,6 @@ public class EmbeddingService  {
             List<Embedding> embeddings = response.content();
 
             embeddingStore.addAll(embeddings,segments);
-
             log.info("saved embedding of file {} with {} chunks" , pdf.getFilename() , segments.size());
 
         }

@@ -32,14 +32,14 @@ public class ModelHandlingService {
 
         log.info("gemini invoked...");
         String response = primary.chat(prompt);
-        return new PythonResponse(response);
+        return new PythonResponse(response , "gemini 3.8 flash");
     }
 
     public PythonResponse fallBack(String prompt , Throwable throwable) {
 
         log.warn("fallback option bcs gemini sucks...");
         String response = fallback.chat(prompt);
-        return new PythonResponse(response);
+        return new PythonResponse(response , "Qwens 2.5 7b");
     }
 
 }
