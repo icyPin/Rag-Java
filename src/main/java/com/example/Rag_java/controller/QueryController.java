@@ -30,7 +30,8 @@ public class QueryController {
     public ResponseEntity<ChatResponse> getData(@RequestBody ChatRequest request) {
 
         String query = request.query();
-        List<TextSegment> chunks = relivantChunksService.searchTopK(query);
+        String category = modelHandlingService.getCategory(query);
+        List<TextSegment> chunks = relivantChunksService.searchTopK(query , category);
 
         String context = chunks.stream()
                 .map(TextSegment::text)
@@ -39,13 +40,14 @@ public class QueryController {
         String finalPrompt = String.format("""
             Answer the user's question strictly based on the following context.
             If the answer cannot be found in the context, respond with "I cannot find this in the documents."
-
+            
             CONTEXT:
             %s
 
             USER QUESTION:
             %s
             """, context, query);
+
 
         PythonResponse response = modelHandlingService.getResponse(finalPrompt);
         return ResponseEntity.ok(new ChatResponse(response.response(), response.modelUsed()));
