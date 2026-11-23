@@ -135,6 +135,20 @@ public class FolderReadingService {
     }
 
     public void cleanup(Set<String> files){
+        List<String> trackedNames = jdbcClient.sql("SELECT file_name FROM ingested_files")
+                .query(String.class)
+                .list();
 
+        for (String trackedName : trackedNames) {
+            if (!files.contains(trackedName)) {
+                log.info("Deleted PDF detected: {}. Removing vectors...", trackedName);
+                jdbcClient.sql("DELETE FROM vector_store WHERE metadata->>'file_name' = ?")
+                        .param(trackedName)
+                        .update();
+                jdbcClient.sql("DELETE FROM ingested_files WHERE file_name = ?")
+                        .param(trackedName)
+                        .update();
+            }
+        }
     }
 }
