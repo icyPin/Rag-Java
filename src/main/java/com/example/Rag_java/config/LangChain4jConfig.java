@@ -16,6 +16,7 @@ public class LangChain4jConfig {
 
     @Value("${app.dbPassword}")
     private String dbPassword;
+
     @Bean
     public EmbeddingModel embeddingModel(){
         return OllamaEmbeddingModel.builder()
